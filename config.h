@@ -3,6 +3,7 @@
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int gappx     = 1;        /* gap pixel between windows */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = {
@@ -111,6 +112,40 @@ static const Key keys[] = {
   { MODKEY,                       XK_w,         spawn,           SHCMD("$BROWSER") },
   { MODKEY|ShiftMask,             XK_w,         spawn,           SHCMD("$WBROWSER") },
 
+  { MODKEY,                       XK_Return,                 spawn,            SHCMD("alacritty -t nnn -e nnn -erx ~") },
+  { MODKEY,                       XK_n,                      spawn,            SHCMD("dunstctl set-paused toggle && refstatus") },
+  { MODKEY,                       XK_v,                      spawn,            SHCMD("alacritty -t pulsemixer -e pulsemixer") },
+  { MODKEY,                       XK_c,                      spawn,            SHCMD("clipmenu -i 2>/dev/null") },
+  { 0,                            XK_Pause,                  spawn,            SHCMD("betterlockscreen -l >/dev/null") },
+
+  // Script
+  { MODKEY,                       XK_e,                      spawn,            SHCMD("emoji") },
+  { MODKEY,                       XK_r,                      spawn,            SHCMD("refstatus") },
+  { MODKEY,                       XK_s,                      spawn,            SHCMD("dmenussh") },
+  { MODKEY,                       XK_i,                      spawn,            SHCMD("dmenuwifi") },
+  { MODKEY,                       XK_d,                      spawn,            SHCMD("dmenudisplay") },
+  { MODKEY,                       XK_m,                      spawn,            SHCMD("dmenumount mount") },
+  { MODKEY,                       XK_u,                      spawn,            SHCMD("dmenumount umount") },
+  { MODKEY,                       XK_b,                      spawn,            SHCMD("dmenublue >/dev/null") },
+  { 0,                            XK_Print,                  spawn,            SHCMD("screenshot full") },
+  { ShiftMask,                    XK_Print,                  spawn,            SHCMD("screenshot select") },
+  { MODKEY,                       XK_Right,                  spawn,            SHCMD("brightness up && xobctl show brightness") },
+  { MODKEY,                       XK_Left,                   spawn,            SHCMD("brightness down && xobctl show brightness") },
+  { MODKEY,                       XK_Up,                     spawn,            SHCMD("audio up && xobctl show volume") },
+  { MODKEY,                       XK_Down,                   spawn,            SHCMD("audio down && xobctl show volume") },
+  { MODKEY|ShiftMask,             XK_p,                      spawn,            SHCMD("genurlqr") },
+
+  // XF86 keys
+  /* { 0,                            XF86XK_MonBrightnessUp,    spawn,            SHCMD("brightness up && xobctl show brightness") }, */
+  /* { 0,                            XF86XK_MonBrightnessDown,  spawn,            SHCMD("brightness down && xobctl show brightness") }, */
+  /* { 0,                            XF86XK_AudioMute,          spawn,            SHCMD("audio toggle && xobctl show volume") }, */
+  /* { 0,                            XF86XK_AudioRaiseVolume,   spawn,            SHCMD("audio up && xobctl show volume") }, */
+  /* { 0,                            XF86XK_AudioLowerVolume,   spawn,            SHCMD("audio down && xobctl show volume") }, */
+  /* { 0,                            XF86XK_AudioPlay,          spawn,            SHCMD("playerctl play-pause") }, */
+  /* { 0,                            XF86XK_AudioPause,         spawn,            SHCMD("playerctl pause") }, */
+  /* { 0,                            XF86XK_AudioNext,          spawn,            SHCMD("playerctl next") }, */
+  /* { 0,                            XF86XK_AudioPrev,          spawn,            SHCMD("playerctl previous") }, */
+
 	{ MODKEY,                       XK_b,         togglebar,       {0} },
 	{ MODKEY,                       XK_j,         focusstack,      {.i = +1 } },
 	{ MODKEY,                       XK_k,         focusstack,      {.i = -1 } },
@@ -119,6 +154,16 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_h,         setmfact,        {.f = -0.05} },
 	{ MODKEY,                       XK_l,         setmfact,        {.f = +0.05} },
 	{ MODKEY,                       XK_z,         zoom,            {0} },
+
+  // Movement
+ 	{ MODKEY|ShiftMask,             XK_j,         moveresize,      {.v = "0x 25y 0w 0h" } },
+ 	{ MODKEY|ShiftMask,             XK_k,         moveresize,      {.v = "0x -25y 0w 0h" } },
+ 	{ MODKEY|ShiftMask,             XK_l,         moveresize,      {.v = "25x 0y 0w 0h" } },
+ 	{ MODKEY|ShiftMask,             XK_h,         moveresize,      {.v = "-25x 0y 0w 0h" } },
+ 	{ MODKEY|ControlMask,           XK_j,         moveresize,      {.v = "0x 0y 0w 25h" } },
+ 	{ MODKEY|ControlMask,           XK_k,         moveresize,      {.v = "0x 0y 0w -25h" } },
+ 	{ MODKEY|ControlMask,           XK_l,         moveresize,      {.v = "0x 0y 25w 0h" } },
+ 	{ MODKEY|ControlMask,           XK_h,         moveresize,      {.v = "0x 0y -25w 0h" } },
 
 	{ AltMask,                      XK_Tab,       view,            {0} },
 	{ MODKEY,                       XK_Tab,       shiftviewclients, { .i = +1 } },
