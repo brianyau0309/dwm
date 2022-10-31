@@ -75,6 +75,23 @@ static const Layout layouts[] = {
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 
+/* commands spawned when clicking statusbar, the mouse button pressed is exported as BUTTON */
+static char *statuscmds[] = {
+  "moc.statuscmd",        // x01
+  "wkon.statuscmd",       // x02
+  "storage.statuscmd",    // x03
+  "date.statuscmd",       // x04
+  "battery.statuscmd",    // x05
+  "keyboard.statuscmd",   // x06
+  "syncthing.statuscmd",  // x07
+  "bluetooth.statuscmd",  // x08
+  "notify.statuscmd",     // x09
+  "",                     // x0A cannot be used since \x0A is equal to \n
+  "audio.statuscmd",      // x0B
+  "internet.statuscmd",   // x0C
+};
+static const char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
+
 static const Key keys[] = {
 	/* modifier                     key           function        argument */
 
@@ -125,7 +142,9 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button1,        spawn,          {.v = statuscmd } },
+	{ ClkStatusText,        0,              Button2,        spawn,          {.v = statuscmd } },
+	{ ClkStatusText,        0,              Button3,        spawn,          {.v = statuscmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
