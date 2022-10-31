@@ -75,20 +75,19 @@ static const Layout layouts[] = {
 static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 
-/* commands spawned when clicking statusbar, the mouse button pressed is exported as BUTTON */
-static char *statuscmds[] = {
-  "moc.statuscmd",        // x01
-  "wkon.statuscmd",       // x02
-  "storage.statuscmd",    // x03
-  "date.statuscmd",       // x04
-  "battery.statuscmd",    // x05
-  "keyboard.statuscmd",   // x06
-  "syncthing.statuscmd",  // x07
-  "bluetooth.statuscmd",  // x08
-  "notify.statuscmd",     // x09
-  "",                     // x0A cannot be used since \x0A is equal to \n
-  "audio.statuscmd",      // x0B
-  "internet.statuscmd",   // x0C
+static const StatusCmd statuscmds[] = {
+	{ "moc.statuscmd",            1 }, // x01
+  { "wkon.statuscmd",           2 }, // x02
+  { "storage.statuscmd",        3 }, // x03
+  { "date.statuscmd",           4 }, // x04
+  { "battery.statuscmd",        5 }, // x05
+  { "keyboard.statuscmd",       6 }, // x06
+  { "syncthing.statuscmd",      7 }, // x07
+  { "bluetooth.statuscmd",      8 }, // x08
+  { "notify.statuscmd",         9 }, // x09
+  { "",                         1 }, // x0A cannot be used since \x0A is equal to \n
+  { "audio.statuscmd",          11 }, // x0B
+  { "internet.statuscmd",       12 }, // x0C
 };
 static const char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
 
