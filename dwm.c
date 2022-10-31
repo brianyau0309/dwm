@@ -96,6 +96,7 @@ struct Client {
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
 	unsigned int tags;
+	unsigned int switchtotag;
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
 	Client *next;
 	Client *snext;
@@ -140,6 +141,7 @@ typedef struct {
 	const char *instance;
 	const char *title;
 	unsigned int tags;
+	unsigned int switchtotag;
 	int isfloating;
 	int monitor;
 } Rule;
@@ -201,7 +203,7 @@ static void movemouse(const Arg *arg);
 static Client *nexttiled(Client *c, Monitor *m);
 static void pop(Client *c);
 static void propertynotify(XEvent *e);
-/* static void quit(const Arg *arg); */
+static void quit(const Arg *arg);
 static Monitor *recttomon(int x, int y, int w, int h);
 static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
@@ -328,6 +330,11 @@ applyrules(Client *c)
 			for (m = mons; m && (m->tagset[m->seltags] & c->tags) == 0; m = m->next);
 			if (m)
 				c->mon = m;
+			if (r->switchtotag) {
+				Arg a = { .ui = r->tags };
+				c->switchtotag = selmon->tagset[selmon->seltags];
+				view(&a);
+			}
 		}
 	}
 	if (ch.res_class)
@@ -1374,11 +1381,11 @@ propertynotify(XEvent *e)
 	}
 }
 
-/* void */
-/* quit(const Arg *arg) */
-/* { */
-/* 	running = 0; */
-/* } */
+void
+quit(const Arg *arg)
+{
+	running = 0;
+}
 
 Monitor *
 recttomon(int x, int y, int w, int h)
@@ -1977,10 +1984,14 @@ unmanage(Client *c, int destroyed)
 		XSetErrorHandler(xerror);
 		XUngrabServer(dpy);
 	}
-	free(c);
 	focus(NULL);
 	updateclientlist();
 	arrange(m);
+	if (c->switchtotag) {
+		Arg a = { .ui = c->switchtotag };
+		view(&a);
+	}
+	free(c);
 }
 
 void
