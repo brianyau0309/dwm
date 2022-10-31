@@ -98,6 +98,7 @@ static const StatusCmd statuscmds[] = {
 };
 static const char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
 
+#include "focusurgent.c"
 static const Key keys[] = {
 	/* modifier                     key           function        argument */
 
@@ -139,6 +140,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                         7)
 	TAGKEYS(                        XK_9,                         8)
 	{ MODKEY|ShiftMask,             XK_q,         spawn,          SHCMD("power") },
+	{ MODKEY,                       XK_u,         focusurgent,    {0} },
 };
 
 /* button definitions */
