@@ -97,6 +97,7 @@ struct Client {
 	int bw, oldbw;
 	unsigned int tags;
 	unsigned int switchtotag;
+  unsigned int switchtourgent;
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
 	Client *next;
 	Client *snext;
@@ -144,6 +145,7 @@ typedef struct {
 	const char *title;
 	unsigned int tags;
 	unsigned int switchtotag;
+	unsigned int switchtourgent;
 	int isfloating;
 	int monitor;
 } Rule;
@@ -329,6 +331,7 @@ applyrules(Client *c)
 
 	/* rule matching */
 	c->isfloating = 0;
+	c->switchtourgent = 0;
 	c->tags = 0;
 	XGetClassHint(dpy, c->win, &ch);
 	class    = ch.res_class ? ch.res_class : broken;
@@ -341,6 +344,7 @@ applyrules(Client *c)
 		&& (!r->instance || strstr(instance, r->instance)))
 		{
 			c->isfloating = r->isfloating;
+			c->switchtourgent = r->switchtourgent;
 			c->tags |= r->tags;
 			for (m = mons; m && (m->tagset[m->seltags] & c->tags) == 0; m = m->next);
 			if (m)
@@ -633,8 +637,19 @@ clientmessage(XEvent *e)
 			setfullscreen(c, (cme->data.l[0] == 1 /* _NET_WM_STATE_ADD    */
 				|| (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */ && !c->isfullscreen)));
 	} else if (cme->message_type == netatom[NetActiveWindow]) {
-		if (c != selmon->sel && !c->isurgent)
+		if (c != selmon->sel && !c->isurgent) {
 			seturgent(c, 1);
+			if (c->switchtourgent) {
+				int i;
+				for(i = 0; i < LENGTH(tags) && !((1 << i) & c->tags); i++);
+				if(i < LENGTH(tags)) {
+					const Arg a = {.ui = 1 << i};
+					unfocus(selmon->sel, 0);
+					view(&a);
+					focus(c);
+				}
+			}
+		}
 	}
 }
 

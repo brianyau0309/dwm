@@ -46,14 +46,14 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class           instance         title       tags mask     switchtotag    isfloating   monitor */
-  { "Thunderbird",   "Mail",          NULL,       1 << 2,       0,             0,           -1 },
-  { "Thunderbird",   "Calendar",      NULL,       0,            0,             1,           -1 },
-  { "Thunderbird",   "Msgcompose",    NULL,       0,            0,             1,           -1 },
-  { "thunderbird",   "Mail",          NULL,       1 << 2,       0,             0,           -1 },
-  { "thunderbird",   "Calendar",      NULL,       0,            0,             1,           -1 },
-  { "thunderbird",   "Msgcompose",    NULL,       0,            0,             1,           -1 },
-  { "Google-chrome", "google-chrome", NULL,       1 << 1,       1,              0,          -1 },
+	/* class           instance         title       tags mask   switchtotag   switchtourgent   isfloating   monitor */
+  { "Thunderbird",   "Mail",          NULL,       1 << 2,     0,            0,               0,           -1 },
+  { "Thunderbird",   "Calendar",      NULL,       0,          0,            0,               1,           -1 },
+  { "Thunderbird",   "Msgcompose",    NULL,       0,          0,            0,               1,           -1 },
+  { "thunderbird",   "Mail",          NULL,       1 << 2,     0,            0,               0,           -1 },
+  { "thunderbird",   "Calendar",      NULL,       0,          0,            0,               1,           -1 },
+  { "thunderbird",   "Msgcompose",    NULL,       0,          0,            0,               1,           -1 },
+  { "Google-chrome", "google-chrome", NULL,       1 << 1,     1,            1,               0,           -1 },
 };
 
 /* layout(s) */
