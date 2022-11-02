@@ -3,11 +3,6 @@
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
-static       int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = {
@@ -32,7 +27,7 @@ static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg          border   */
 	[SchemeNorm] = { col_gray3, col_black,  col_gray2   },
-	[SchemeSel]  = { col_gray4, col_green0, col_green   },
+	[SchemeSel]  = { col_gray4, col_green0, col_green0  },
 	[SchemeSelW] = { col_gray4, col_black,  col_gray2   },
 };
 static const unsigned int alphas[][3]      = {
@@ -63,29 +58,14 @@ static const Rule rules[] = {
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
-
-#define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
-#include "vanitygaps.c"
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[\\]",     dwindle },    /* first entry is default */
+	{ "[]=",      tile },    /* first entry is default */
 	{ "[M]",      monocle },
-	{ "[]=",      tile },
-	{ "[@]",      spiral },
-	{ "H[]",      deck },
-	{ "TTT",      bstack },
-	{ "===",      bstackhoriz },
-	{ "HHH",      grid },
-	{ "###",      nrowgrid },
-	{ "---",      horizgrid },
-	{ ":::",      gaplessgrid },
-	{ "|M|",      centeredmaster },
-	{ ">M>",      centeredfloatingmaster },
 	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ NULL,       NULL },
 };
 
 /* key definitions */
@@ -166,7 +146,7 @@ static const Key keys[] = {
   { 0,                            XF86XK_AudioNext,          spawn,             SHCMD("playerctl next") },
   { 0,                            XF86XK_AudioPrev,          spawn,             SHCMD("playerctl previous") },
 
-	{ MODKEY|ShiftMask,             XK_b,                      togglebar,         {0} },
+	{ MODKEY,                       XK_b,                      togglebar,         {0} },
 	{ MODKEY,                       XK_j,                      focusstack,        {.i = +1 } },
 	{ MODKEY,                       XK_k,                      focusstack,        {.i = -1 } },
 	{ MODKEY|AltMask,               XK_i,                      incnmaster,        {.i = +1 } },
@@ -174,24 +154,6 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_h,                      setmfact,          {.f = -0.05} },
 	{ MODKEY,                       XK_l,                      setmfact,          {.f = +0.05} },
 	{ MODKEY,                       XK_z,                      zoom,              {0} },
-
-	// Gaps
-	{ MODKEY|AltMask,               XK_3,                      incrgaps,          {.i = +1 } },
-	{ MODKEY|AltMask|ShiftMask,     XK_3,                      incrgaps,          {.i = -1 } },
-	{ MODKEY|AltMask,               XK_4,                      incrigaps,         {.i = +1 } },
-	{ MODKEY|AltMask|ShiftMask,     XK_4,                      incrigaps,         {.i = -1 } },
-	{ MODKEY|AltMask,               XK_5,                      incrogaps,         {.i = +1 } },
-	{ MODKEY|AltMask|ShiftMask,     XK_5,                      incrogaps,         {.i = -1 } },
-	{ MODKEY|AltMask,               XK_6,                      incrihgaps,        {.i = +1 } },
-	{ MODKEY|AltMask|ShiftMask,     XK_6,                      incrihgaps,        {.i = -1 } },
-	{ MODKEY|AltMask,               XK_7,                      incrivgaps,        {.i = +1 } },
-	{ MODKEY|AltMask|ShiftMask,     XK_7,                      incrivgaps,        {.i = -1 } },
-	{ MODKEY|AltMask,               XK_8,                      incrohgaps,        {.i = +1 } },
-	{ MODKEY|AltMask|ShiftMask,     XK_8,                      incrohgaps,        {.i = -1 } },
-	{ MODKEY|AltMask,               XK_9,                      incrovgaps,        {.i = +1 } },
-	{ MODKEY|AltMask|ShiftMask,     XK_9,                      incrovgaps,        {.i = -1 } },
-	{ MODKEY|AltMask,               XK_0,                      togglegaps,        {0} },
-	{ MODKEY|AltMask|ShiftMask,     XK_0,                      defaultgaps,       {0} },
 
   // Window Movement
  	{ MODKEY|ShiftMask,             XK_j,                      moveresize,        {.v = "0x 25y 0w 0h" } },
@@ -208,21 +170,9 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Tab,                    shiftviewclients,  { .i = -1 } },
 	{ AltMask|ShiftMask,            XK_Tab,                    focusurgent,       {0} },
 
-	{ MODKEY|ShiftMask,             XK_r,                      setlayout,         {.v = &layouts[0]} },
+	{ MODKEY|ShiftMask,             XK_t,                      setlayout,         {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_m,                      setlayout,         {.v = &layouts[1]} },
-	{ MODKEY|ShiftMask,             XK_t,                      setlayout,         {.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,             XK_s,                      setlayout,         {.v = &layouts[3]} },
-	{ MODKEY|ShiftMask,             XK_d,                      setlayout,         {.v = &layouts[4]} },
-	{ MODKEY|ShiftMask,             XK_j,                      setlayout,         {.v = &layouts[5]} },
-	{ MODKEY|ShiftMask,             XK_z,                      setlayout,         {.v = &layouts[6]} },
-	{ MODKEY|ShiftMask,             XK_g,                      setlayout,         {.v = &layouts[7]} },
-	{ MODKEY|ShiftMask,             XK_n,                      setlayout,         {.v = &layouts[8]} },
-	{ MODKEY|ShiftMask,             XK_1,                      setlayout,         {.v = &layouts[9]} },
-	{ MODKEY|ShiftMask,             XK_2,                      setlayout,         {.v = &layouts[10]} },
-	{ MODKEY|ShiftMask,             XK_c,                      setlayout,         {.v = &layouts[11]} },
-	{ MODKEY|ShiftMask,             XK_o,                      setlayout,         {.v = &layouts[12]} },
-	{ MODKEY|ShiftMask,             XK_f,                      setlayout,         {.v = &layouts[13]} },
-
+	{ MODKEY|ShiftMask,             XK_f,                      setlayout,         {.v = &layouts[2]} },
 	{ MODKEY|ShiftMask,             XK_space,                  setlayout,         {0} },
 	{ MODKEY,                       XK_space,                  togglefloating,    {0} },
 	{ MODKEY,                       XK_0,                      view,              {.ui = ~0 } },
