@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 6;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -45,14 +45,35 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class           instance         title       tags mask   switchtotag   switchtourgent   isfloating   monitor */
-  { "Thunderbird",   "Mail",          NULL,       1 << 2,     0,            0,               0,           -1 },
-  { "Thunderbird",   "Calendar",      NULL,       0,          0,            0,               1,           -1 },
-  { "Thunderbird",   "Msgcompose",    NULL,       0,          0,            0,               1,           -1 },
-  { "thunderbird",   "Mail",          NULL,       1 << 2,     0,            0,               0,           -1 },
-  { "thunderbird",   "Calendar",      NULL,       0,          0,            0,               1,           -1 },
-  { "thunderbird",   "Msgcompose",    NULL,       0,          0,            0,               1,           -1 },
-  { "Google-chrome", "google-chrome", NULL,       1 << 1,     1,            1,               0,           -1 },
+	/* class                     instance         title                  tags mask  switchtotag  switchtourgent  isfloating  monitor */
+  { NULL,                      NULL,            "Picture in picture",  ~0,        0,           0,              1,          -1 },
+  { "Dragon-drag-and-drop",    NULL,            NULL,                  ~0,        0,           0,              1,          -1 },
+  { "st-256color",             "st-256color",   NULL,                  0,         0,           0,              0,          -1 },
+  { "Alacritty",               "Alacritty",     NULL,                  0,         0,           0,              0,          -1 },
+  { NULL,                      NULL,            "pulsemixer",          0,         0,           0,              1,          -1 },
+  { NULL,                      NULL,            "bluetoothctl",        0,         0,           0,              1,          -1 },
+  { NULL,                      NULL,            "nnn",                 0,         0,           0,              1,          -1 },
+  { "Org.gnome.Nautilus",      NULL,            NULL,                  0,         0,           0,              1,          -1 },
+  { "kdeconnect.app",          NULL,            NULL,                  0,         0,           0,              1,          -1 },
+  { "Google-chrome",           "google-chrome", NULL,                  1 << 1,    1,           1,              0,          -1 },
+  { "DBeaver",                 "DBeaver",       NULL,                  1 << 1,    1,           0,              0,          -1 },
+  { "Thunderbird",             "Mail",          NULL,                  1 << 2,    0,           0,              0,          -1 },
+  { "thunderbird",             "Mail",          NULL,                  1 << 2,    0,           0,              0,          -1 },
+  { "Thunderbird",             "Calendar",      NULL,                  0,         0,           0,              1,          -1 },
+  { "Thunderbird",             "Msgcompose",    NULL,                  0,         0,           0,              1,          -1 },
+  { "thunderbird",             "Calendar",      NULL,                  0,         0,           0,              1,          -1 },
+  { "thunderbird",             "Msgcompose",    NULL,                  0,         0,           0,              1,          -1 },
+  { NULL,                      NULL,            "Discord",             1 << 3,    1,           0,              0,          -1 },
+  { "TelegramDesktop",         NULL,            NULL,                  1 << 3,    0,           1,              0,          -1 },
+  { "Zathura",                 NULL,            NULL,                  1 << 4,    1,           0,              0,          -1 },
+  { "libreoffice-startcenter", NULL,            NULL,                  1 << 4,    1,           0,              0,          -1 },
+  { "obsidian",                "obsidian",      "Obsidian",            1 << 4,    0,           0,              0,          -1 },
+  { "Sxiv",                    NULL,            NULL,                  1 << 5,    1,           0,              0,          -1 },
+  { "feh",                     "feh",           NULL,                  0,         0,           0,              1,          -1 },
+  { "Gimp",                    NULL,            NULL,                  1 << 5,    1,           0,              0,          -1 },
+  { "mpv",                     NULL,            NULL,                  1 << 6,    1,           0,              0,          -1 },
+
+
 };
 
 /* layout(s) */
@@ -129,18 +150,18 @@ static const Key keys[] = {
   { MODKEY,                       XK_b,                      spawn,             SHCMD("dmenublue >/dev/null") },
   { 0,                            XK_Print,                  spawn,             SHCMD("screenshot full") },
   { ShiftMask,                    XK_Print,                  spawn,             SHCMD("screenshot select") },
-  { MODKEY,                       XK_Right,                  spawn,             SHCMD("brightness up && xobctl show brightness") },
-  { MODKEY,                       XK_Left,                   spawn,             SHCMD("brightness down && xobctl show brightness") },
-  { MODKEY,                       XK_Up,                     spawn,             SHCMD("audio up && xobctl show volume") },
-  { MODKEY,                       XK_Down,                   spawn,             SHCMD("audio down && xobctl show volume") },
+  { MODKEY,                       XK_Right,                  spawn,             SHCMD("brightness up && sysnotify brightness") },
+  { MODKEY,                       XK_Left,                   spawn,             SHCMD("brightness down && sysnotify brightness") },
+  { MODKEY,                       XK_Up,                     spawn,             SHCMD("audio up && sysnotify volume") },
+  { MODKEY,                       XK_Down,                   spawn,             SHCMD("audio down && sysnotify volume") },
   { MODKEY|ShiftMask,             XK_p,                      spawn,             SHCMD("genurlqr") },
 
   // XF86 keys
-  { 0,                            XF86XK_MonBrightnessUp,    spawn,             SHCMD("brightness up && xobctl show brightness") },
-  { 0,                            XF86XK_MonBrightnessDown,  spawn,             SHCMD("brightness down && xobctl show brightness") },
-  { 0,                            XF86XK_AudioMute,          spawn,             SHCMD("audio toggle && xobctl show volume") },
-  { 0,                            XF86XK_AudioRaiseVolume,   spawn,             SHCMD("audio up && xobctl show volume") },
-  { 0,                            XF86XK_AudioLowerVolume,   spawn,             SHCMD("audio down && xobctl show volume") },
+  { 0,                            XF86XK_MonBrightnessUp,    spawn,             SHCMD("brightness up && sysnotify brightness") },
+  { 0,                            XF86XK_MonBrightnessDown,  spawn,             SHCMD("brightness down && sysnotify brightness") },
+  { 0,                            XF86XK_AudioMute,          spawn,             SHCMD("audio toggle && sysnotify volume") },
+  { 0,                            XF86XK_AudioRaiseVolume,   spawn,             SHCMD("audio up && sysnotify volume") },
+  { 0,                            XF86XK_AudioLowerVolume,   spawn,             SHCMD("audio down && sysnotify volume") },
   { 0,                            XF86XK_AudioPlay,          spawn,             SHCMD("playerctl play-pause") },
   { 0,                            XF86XK_AudioPause,         spawn,             SHCMD("playerctl pause") },
   { 0,                            XF86XK_AudioNext,          spawn,             SHCMD("playerctl next") },
@@ -215,4 +236,3 @@ static const Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
