@@ -66,13 +66,13 @@ static const Rule rules[] = {
   { "thunderbird",             "Calendar",      NULL,                  0,         0,           0,              1,          -1 },
   { "thunderbird",             "Msgcompose",    NULL,                  0,         0,           0,              1,          -1 },
   { NULL,                      NULL,            "Discord",             1 << 3,    0,           0,              0,          -1 },
-  { "TelegramDesktop",         NULL,            NULL,                  1 << 3,    0,           1,              0,          -1 },
-  { "Zathura",                 NULL,            NULL,                  1 << 4,    0,           0,              0,          -1 },
+  { "TelegramDesktop",         NULL,            NULL,                  0,         0,           1,              0,          -1 },
+  { "Zathura",                 NULL,            NULL,                  0,         0,           0,              0,          -1 },
   { "libreoffice-startcenter", NULL,            NULL,                  1 << 4,    0,           0,              0,          -1 },
   { "obsidian",                "obsidian",      "Obsidian",            1 << 4,    0,           0,              0,          -1 },
-  { "Sxiv",                    NULL,            NULL,                  1 << 5,    0,           0,              0,          -1 },
+  { "Sxiv",                    NULL,            NULL,                  0,         0,           0,              0,          -1 },
   { "feh",                     "feh",           NULL,                  0,         0,           0,              1,          -1 },
-  { "Gimp",                    NULL,            NULL,                  1 << 5,    0,           0,              0,          -1 },
+  { "Gimp",                    NULL,            NULL,                  0,         0,           0,              0,          -1 },
 
 
 };
@@ -81,7 +81,7 @@ static const Rule rules[] = {
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
-static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
+static const int lockfullscreen = 0; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
   /* symbol     arrange function */
@@ -200,7 +200,6 @@ static const Key keys[] = {
   { MODKEY|ShiftMask,             XK_f,                      setlayout,         {.v = &layouts[2]} },
   { MODKEY|ShiftMask,             XK_space,                  setlayout,         {0} },
   { MODKEY,                       XK_space,                  togglefloating,    {0} },
-  { MODKEY,                       XK_f,                      togglefullscr,     {0} },
   { MODKEY,                       XK_0,                      view,              {.ui = ~0 } },
   { MODKEY|ShiftMask,             XK_0,                      tag,               {.ui = ~0 } },
   { MODKEY|ShiftMask,             XK_k,                      focusmon,          {.i = -1 } },
